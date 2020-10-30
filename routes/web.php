@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\QuoteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
+
+Route::get('/quotes',[QuoteController::class,'getIndex'])->name('index');
+Route::post('/quotes',[QuoteController::class,'postQuote'])->name('create');
+Route::get('/delete/{quote_id}',[QuoteController::class, 'deleteQuote'])->name('delete');
+
+// Route::get('/delete/{quote_id}',[
+//     'uses' => 'QuoteController@deleteQuote',
+//     'as' => 'delete'
+//     ]);
