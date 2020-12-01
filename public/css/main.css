@@ -51,3 +51,15 @@ body {
 	right: 4px;
 	font-family: sans-serif;
 }
+
+.button {
+}
+
+.thumbnail img {
+	max-height: 150px;
+	display: block;
+	margin: auto;
+}
+.caption span {
+	float: right;
+}
