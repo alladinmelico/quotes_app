@@ -31,10 +31,27 @@ Route::get('/admin/dashboard',[AdminController::class,'getDashboard'])
     ->name('admin.dashboard');
 Route::get('/admin/logout',[AdminController::class,'getLogout'])->name('admin.logout');
 
-Route::resource('/', ProductController::class);
 
-Route::get('/signup', [UserController::class,'getSignup'])->name('user.signup');
-Route::get('/signin', [UserController::class,'getSignin'])->name('user.signin');
-Route::post('/signup', [UserController::class,'postSignup'])->name('user.signup');
-Route::post('/signin', [UserController::class,'postSignin'])->name('user.signin');
-Route::get('/profile', [UserController::class,'getProfile'])->name('profile');
+Route::get('/add-to-cart/{id}', [ProductController::class,'getAddToCart'])->name('product.addToCart');
+Route::get('/shopping-cart', [ProductController::class,'getCart'])->name('product.shoppingCart');
+Route::get('/checkout', [ProductController::class,'postCheckout'])->name('checkout')->middleware('auth');
+Route::get('/remove/{id}', [ProductController::class,'getRemoveItem'])->name('product.remove');
+Route::get('/reduce/{id}', [ProductController::class,'getReduceByOne'])->name('product.reduceByOne');
+Route::resource('/product', ProductController::class);
+
+
+Route::group(['prefix' => 'user'], function(){
+    Route::group(['middleware' => 'guest'], function() {
+        Route::get('/signup', [UserController::class,'getSignup'])->name('user.signup');
+        Route::get('/signin', [UserController::class,'getSignin'])->name('user.signin');
+        Route::post('/signup', [UserController::class,'postSignup'])->name('user.signup');
+        Route::post('/signin', [UserController::class,'postSignin'])->name('user.signin');
+
+    });
+
+    Route::group(['middleware' => 'auth'], function() {
+        Route::get('/profile', [UserController::class,'getProfile'])->name('user.profile');
+    });
+
+    Route::get('/logout', [UserController::class,'getLogout'])->name('user.logout');
+});
